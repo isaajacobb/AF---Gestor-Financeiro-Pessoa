@@ -1,0 +1,50 @@
+<h2>Resumo financeiro</h2>
+
+<p [ngClass]="'texto-receita'">
+  Receitas: {{ totalReceitas | currency:'BRL' }}
+</p>
+
+<p [ngClass]="'texto-despesa'">
+  Despesas: {{ totalDespesas | currency:'BRL' }}
+</p>
+
+<p [ngClass]="saldo >= 0 ? 'saldo-positivo' : 'saldo-negativo'">
+  Saldo: {{ saldo | currency:'BRL' }}
+</p>
+
+<label>
+  Filtro por categoria:
+  <select [(ngModel)]="categoriaFiltro" (change)="calcularTotais()">
+    <option value="">Todas</option>
+    <option *ngFor="let cat of categoriasUnicas" [value]="cat">
+      {{ cat }}
+    </option>
+  </select>
+</label>
+
+<h2>Lista de Movimentações Financeiras</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Tipo</th>
+      <th>Categoria</th>
+      <th>Descrição</th>
+      <th>Data</th>
+      <th>Valor</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let mov of movimentacoesFiltradas" [ngClass]="mov.tipo">
+      <td>{{ mov.tipo }}</td>
+      <td>{{ mov.categoria }}</td>
+      <td>{{ mov.descricao }}</td>
+      <td>{{ mov.data | date:'shortDate' }}</td>
+      <td [ngClass]="mov.tipo">{{ mov.valor | currency:'BRL' }}</td>
+      <td>
+        <button (click)="excluir(mov._id!)">Excluir</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
